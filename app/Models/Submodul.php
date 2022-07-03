@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model {
+class Submodul extends Model {
     use HasFactory;
-    protected $fillable = ['name'];
+
+    protected $table = 'submoduls';
+    protected $guarded = ['id'];
+    protected $with = ['modul'];
 
     public function modul() {
-        return $this->hasMany(Modul::class);
+        return $this->belongsTo(Modul::class);
     }
 }
