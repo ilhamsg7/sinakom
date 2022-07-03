@@ -19,10 +19,18 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'date_birth',
+        'address',
+        'gender',
+        'photo_path',
+        'phone'
     ];
+
+    protected $with = ['role'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,4 +50,28 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getNameAttribute() {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getPhotoPathAttribute($value) {
+        return asset('storage/' . $value);
+    }
+
+    public function getDateBirthAttribute($value) {
+        return date('d-m-Y', strtotime($value));
+    }
+
+    public function membership() {
+        return $this->hasMany(Membership::class);
+    }
+
+    public function result() {
+        return $this->hasMany(Result::class);
+    }
+
+    public function role() {
+        return $this->belongsTo(Role::class);
+    }
 }
