@@ -1,19 +1,23 @@
 <?php
 
+use App\Models\User;
+use App\Models\CourseList;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DemoController;
-use App\Http\Controllers\Menu\MenuGroupController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\CourseListController;
 use App\Http\Controllers\Menu\MenuItemController;
+use App\Http\Controllers\Menu\MenuGroupController;
+use App\Http\Controllers\RoleAndPermission\RoleController;
+use App\Http\Controllers\RoleAndPermission\ExportRoleController;
+use App\Http\Controllers\RoleAndPermission\ImportRoleController;
+use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignPermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignUserToRoleController;
 use App\Http\Controllers\RoleAndPermission\ExportPermissionController;
-use App\Http\Controllers\RoleAndPermission\ExportRoleController;
 use App\Http\Controllers\RoleAndPermission\ImportPermissionController;
-use App\Http\Controllers\RoleAndPermission\ImportRoleController;
-use App\Http\Controllers\RoleAndPermission\PermissionController;
-use App\Http\Controllers\RoleAndPermission\RoleController;
-use Illuminate\Support\Facades\Route;
-use App\Models\User;
-use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +32,9 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('auth/login');
 });
+
+Route::resource('/dashboard/course', CourseListController::class)->middleware('auth');
+Route::resource('/dashboard/levels', LevelController::class)->middleware('auth');
 
 Route::group(['middleware' => ['auth','verified']], function () {
     Route::get('/dashboard', function () {

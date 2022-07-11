@@ -14,4 +14,8 @@ class CourseList extends Model {
     public function membership() {
         return $this->hasMany(Membership::class);
     }
+
+    public function getRouteKeyName(){
+        return 'course_name';
+    }
 }
