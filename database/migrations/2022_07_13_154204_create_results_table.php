@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreignId('quiz_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->float('score');
+            $table->integer('correct');
+            $table->integer('wrong');
+            $table->integer('empty');
             $table->timestamps();
         });
     }
