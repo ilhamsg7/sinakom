@@ -10,13 +10,13 @@ class Membership extends Model {
 
     protected $table = 'memberships';
     protected $guarded = ['id'];
-    protected $with = ['courseList', 'user'];
+    protected $with = ['course_list', 'user'];
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function courseList() {
+    public function course_list() {
         return $this->belongsTo(CourseList::class);
     }
 }

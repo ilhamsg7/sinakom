@@ -1,19 +1,24 @@
 <?php
 
+use App\Models\User;
+use App\Models\CourseList;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DemoController;
-use App\Http\Controllers\Menu\MenuGroupController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\CourseListController;
 use App\Http\Controllers\Menu\MenuItemController;
+use App\Http\Controllers\Menu\MenuGroupController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\RoleAndPermission\RoleController;
+use App\Http\Controllers\RoleAndPermission\ExportRoleController;
+use App\Http\Controllers\RoleAndPermission\ImportRoleController;
+use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignPermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignUserToRoleController;
 use App\Http\Controllers\RoleAndPermission\ExportPermissionController;
-use App\Http\Controllers\RoleAndPermission\ExportRoleController;
 use App\Http\Controllers\RoleAndPermission\ImportPermissionController;
-use App\Http\Controllers\RoleAndPermission\ImportRoleController;
-use App\Http\Controllers\RoleAndPermission\PermissionController;
-use App\Http\Controllers\RoleAndPermission\RoleController;
-use Illuminate\Support\Facades\Route;
-use App\Models\User;
-use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,11 +34,27 @@ Route::get('/', function () {
     return view('components.learn-container');
 });
 
+Route::group(['middleware' => ['auth']], function() {
+    Route::prefix('/dashboard')->group(function() {
+        Route::resource('/course', CourseListController::class);
+        Route::resource('/levels', LevelController::class);
+        Route::resource('/quizzes', QuizController::class);
+        Route::resource('/questions', QuestionController::class);
+    });
+});
+
+Route::group(['middleware' => ['auth','verified']], function () {
+    Route::get('/dashboard', function () {
+        return view('home', ['users' => User::get(),]);
+    });
+    //user list
+});
 // Route::group(['middleware' => ['auth','verified']], function () {
 //     Route::get('/dashboard', function () {
 //         return view('home', ['users' => User::get(),]);
 //     });
 //     //user list
+
 
 //     Route::prefix('user-management')->group(function () {
 //         Route::resource('user', UserController::class);

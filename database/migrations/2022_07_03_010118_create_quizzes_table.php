@@ -15,7 +15,12 @@ return new class extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('modul_id')->constrained();
+            $table->string('image')->nullable();
             $table->string('quiz_path');
+            $table->text('desc');
+            $table->enum('status', ['dibuka', 'draft', 'ditutup'])->default('draft');
+            $table->timestamp('finished_at')->nullable();
+            $table->timestamp('started_at')->nullable();
             $table->timestamps();
         });
     }
