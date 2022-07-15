@@ -69,8 +69,14 @@ class AnswerController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        //
+    public function update(Request $request, Answer $answer) {
+        $rules = [
+            'question_id' => 'required|exists:questions,id',
+            'answer' => 'required|string',
+        ];
+
+        $validated = $request->validate($rules);
+        Answer::where('id', $answer->id)->update($validated);
     }
 
     /**

@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth','verified']], function () {
         return view('home', ['users' => User::get(),]);
     });
     //user list
-
+});
 // Route::group(['middleware' => ['auth','verified']], function () {
 //     Route::get('/dashboard', function () {
 //         return view('home', ['users' => User::get(),]);

@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->date('date_birth');
-            $table->string('address');
-            $table->char('gender');
+            $table->date('date_birth')->nullable();;
+            $table->string('address')->nullable();;
+            $table->char('gender')->nullable();;
             $table->string('photo_path')->nullable();
-            $table->string('phone', 15);
+            $table->string('phone', 15)->nullable();;
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
