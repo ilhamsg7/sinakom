@@ -9,6 +9,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\CourseListController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\Menu\MenuGroupController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoleAndPermission\RoleController;
 use App\Http\Controllers\RoleAndPermission\ExportRoleController;
 use App\Http\Controllers\RoleAndPermission\ImportRoleController;
@@ -33,8 +34,14 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::resource('/dashboard/course', CourseListController::class)->middleware('auth');
-Route::resource('/dashboard/levels', LevelController::class)->middleware('auth');
+Route::group(['middleware' => ['auth']], function() {
+    Route::prefix('/dashboard')->group(function() {
+        Route::resource('/course', CourseListController::class);
+        Route::resource('/levels', LevelController::class);
+        Route::resource('/quizzes', QuizController::class);
+        Route::resource('/questions', QuestionController::class);
+    });
+});
 
 Route::group(['middleware' => ['auth','verified']], function () {
     Route::get('/dashboard', function () {

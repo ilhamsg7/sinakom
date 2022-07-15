@@ -23,6 +23,7 @@ return new class extends Migration
             $table->longText('answer3');
             $table->longText('answer4');
             $table->enum('correct_answer', ['answer1', 'answer2', 'answer3', 'answer4']);
+            $table->integer('sorting');
             $table->timestamps();
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
         });
