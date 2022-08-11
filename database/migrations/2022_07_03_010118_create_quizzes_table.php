@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('modul_id')->constrained();
             $table->string('image')->nullable();
+            $table->string('slug');
             $table->string('quiz_path');
             $table->text('desc');
             $table->enum('status', ['dibuka', 'draft', 'ditutup'])->default('draft');

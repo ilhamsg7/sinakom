@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::prefix('/dashboard')->group(function() {
         Route::resource('/course', CourseListController::class);
         Route::resource('/levels', LevelController::class);
-        Route::resource('/quizzes', QuizController::class);
+        //Route::resource('/quizzes', QuizController::class);
         Route::resource('/questions', QuestionController::class);
         Route::resource('/membership', MembershipController::class);
         Route::resource('role', RoleController::class);

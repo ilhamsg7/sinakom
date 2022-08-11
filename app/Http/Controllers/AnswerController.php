@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 use App\Http\Requests\AnswerRequest;
+use App\Models\Question;
+use App\Models\Result;
 
 class AnswerController extends Controller {
     /**
@@ -35,7 +37,27 @@ class AnswerController extends Controller {
         $validated = $request->validated();
         $validated['user_id'] = auth()->user()->id;
         Answer::create($validated);
-        return redirect()->route('quiz');
+        $question = Question::where('id', $validated['question_id'])->get();
+        $correct = 0;
+
+        foreach($question as $questions) {
+            if($validated['answer'] == $questions->correct_answer) {
+                $correct++;
+            }
+        }
+
+        $points = round(100 / (count($questions->correct_answer)) * $correct);
+        $wrong = count($questions->correct_answer) - $correct;
+        $empty = count($questions->correct_answer) - count($validated['answer']);
+
+        Result::create([
+            'user_id' => auth()->user()->id,
+            'quiz_id' => $questions->quiz_id,
+            'points' => $points,
+            'wrong' => $wrong,
+            'empty' => $empty,
+        ]);
+        return redirect()->route('quizzes')->with('success', 'Kuis berhasil diselesaikan');
     }
 
     /**
