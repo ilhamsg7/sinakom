@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use App\Http\Requests\QuizzesRequest;
 
 class QuizController extends Controller {
     /**
@@ -30,16 +31,8 @@ class QuizController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $quiz = $request->validate([
-            'modul_id' => 'required|exists:moduls,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'quiz_path' => 'required',
-            'desc' => 'required|string',
-            'status' => 'required|in:dibuka,draft,ditutup',
-            'finished_at' => 'nullable|date',
-            'started_at' => 'nullable|date',
-        ]);
+    public function store(QuizzesRequest $request) {
+        $quiz = $request->validated();
         Quiz::create($quiz);
         return redirect()->route('quizzes')->with('success', 'Quiz berhasil ditambahkan');
     }
@@ -77,17 +70,9 @@ class QuizController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Quiz $quiz) {
+    public function update(QuizzesRequest $request, Quiz $quiz) {
         $quiz = Quiz::where('path', $quiz->quiz_path)->first();
-        $quiz->update($request->validate([
-            'modul_id' => 'required|exists:moduls,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'quiz_path' => 'required',
-            'desc' => 'required|string',
-            'status' => 'required|in:dibuka,draft,ditutup',
-            'finished_at' => 'nullable|date',
-            'started_at' => 'nullable|date',
-        ]));
+        $quiz->update($request->validated());
         return redirect()->route('quizzes')->with('success', 'Quiz berhasil diubah');
     }
 

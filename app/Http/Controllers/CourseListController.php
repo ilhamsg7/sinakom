@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseList;
 use Illuminate\Http\Request;
+use App\Http\Requests\CourseListRequest;
 
 class CourseListController extends Controller
 {
@@ -31,15 +32,9 @@ class CourseListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'course_name' => 'required|max:255',
-            'price' => 'required|integer',
-            'description' => 'required|max:255',
-        ]);
-
+    public function store(CourseListRequest $request) {
+        $validated = $request->validated();
         CourseList::create($validated);
-
         return redirect('/course-list')->with('success', 'Course created successfully');
     }
 
@@ -74,14 +69,8 @@ class CourseListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CourseList $list) {
-        $rules = [
-            'course_name' => 'required|max:255',
-            'price' => 'required|integer',
-            'description' => 'required|max:255',
-        ];
-
-        $validated = $request->validate($rules);
+    public function update(CourseListRequest $request, CourseList $list) {
+        $validated = $request->validated();
         CourseList::where('id', $list->id)->update($validated);
         return redirect('/course-list')->with('success', 'Course updated successfully');
     }

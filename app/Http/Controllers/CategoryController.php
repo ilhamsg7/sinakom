@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -31,13 +32,9 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-        ]);
-
+    public function store(CategoryRequest $request){
+        $validated = $request->validated();
         Category::create($validated);
-
         return redirect('/categories')->with('success', 'Category created successfully');
     }
 
@@ -72,12 +69,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category){
-        $rules = [
-            'name' => 'required|max:255',
-        ];
-
-        $validated = $request->validate($rules);
+    public function update(CategoryRequest $request, Category $category){
+        $validated = $request->validated();
         Category::where('id', $category->id)->update($validated);
         return redirect('/categories')->with('success', 'Category updated successfully');
     }

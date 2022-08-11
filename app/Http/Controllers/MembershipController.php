@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Membership;
 use Illuminate\Http\Request;
+use App\Http\Requests\MembershipRequest;
 
 class MembershipController extends Controller
 {
@@ -31,12 +32,8 @@ class MembershipController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'user_id' => 'required',
-            'course_list_id' => 'required',
-        ]);
-
+    public function store(MembershipRequest $request) {
+        $validated = $request->validated();
         Membership::create($validated);
 
         return redirect('/membership')->with('success', 'Membership created successfully');
@@ -73,13 +70,8 @@ class MembershipController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Membership $member){
-        $rules = [
-            'user_id' => 'required',
-            'course_list_id' => 'required',
-        ];
-
-        $validated = $member->update($rules);
+    public function update(MembershipRequest $request, Membership $member){
+        $validated = $request->validated();
         Membership::where('id', $member->id)->update($validated);
         return redirect('/membership')->with('success', 'Membership updated successfully');
     }

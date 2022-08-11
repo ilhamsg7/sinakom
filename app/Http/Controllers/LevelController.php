@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Level;
 use Illuminate\Http\Request;
+use App\Http\Requests\LevelRequest;
 
 class LevelController extends Controller
 {
@@ -31,13 +32,9 @@ class LevelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'level_name' => 'required|max:255',
-        ]);
-
+    public function store(LevelRequest $request) {
+        $validated = $request->validated();
         Level::create($validated);
-
         return redirect('/levels')->with('success', 'Level created successfully');
     }
 
@@ -72,11 +69,8 @@ class LevelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Level $level) {
-        $rule = [
-            'level_name' => 'required|max:255',
-        ];
-        $validated = $request->validate($rule);
+    public function update(LevelRequest $request, Level $level) {
+        $validated = $request->validated();
         Level::where('id', $level->id)->update($validated);
         return redirect('/levels')->with('success', 'Level updated successfully');
     }

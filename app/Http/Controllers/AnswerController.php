@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use Illuminate\Http\Request;
+use App\Http\Requests\AnswerRequest;
 
 class AnswerController extends Controller {
     /**
@@ -30,13 +31,8 @@ class AnswerController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'question_id' => 'required|exists:questions,id',
-            'answer' => 'required|string',
-        ]);
-
+    public function store(AnswerRequest $request) {
+        $validated = $request->validated();
         $validated['user_id'] = auth()->user()->id;
         Answer::create($validated);
         return redirect()->route('quiz');
@@ -69,13 +65,8 @@ class AnswerController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Answer $answer) {
-        $rules = [
-            'question_id' => 'required|exists:questions,id',
-            'answer' => 'required|string',
-        ];
-
-        $validated = $request->validate($rules);
+    public function update(AnswerRequest $request, Answer $answer) {
+        $validated = $request->validated();
         Answer::where('id', $answer->id)->update($validated);
     }
 

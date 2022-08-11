@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Http\Requests\QuestionRequest;
 use Illuminate\Support\Facades\Storage;
 
 class QuestionController extends Controller {
@@ -31,17 +32,8 @@ class QuestionController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'quiz_id' => 'required|exists:quizzes,id',
-            'question' => 'required|string',
-            'image' => 'sometimes|image|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'answer1' => 'required|string',
-            'answer2' => 'required|string',
-            'answer3' => 'required|string',
-            'answer4' => 'required|string',
-            'correct_answer' => 'required',
-        ]);
+    public function store(QuestionRequest $request) {
+        $validated = $request->validated();
         if($request->file('image')) {
             $validated['image'] = $request->file('image')->store('images/question', 'public');
         }
@@ -80,18 +72,8 @@ class QuestionController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question) {
-        $validated = $request->validate([
-            'quiz_id' => 'required|exists:quizzes,id',
-            'question' => 'required|string',
-            'image' => 'sometimes|image|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'answer1' => 'required|string',
-            'answer2' => 'required|string',
-            'answer3' => 'required|string',
-            'answer4' => 'required|string',
-            'correct_answer' => 'required',
-            'sorting' => 'required|integer',
-        ]);
+    public function update(QuestionRequest $request, Question $question) {
+        $validated = $request->validated();
         if($request->file('image')) {
             if($request->oldImage) {
                 Storage::delete($request->oldImage);
